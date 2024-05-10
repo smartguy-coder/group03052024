@@ -50,6 +50,6 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          black .
+#          black .
           isort .
           flake8 .
