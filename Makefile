@@ -20,4 +20,3 @@ c:
 	isort .
 	flake8 .
 	@echo 'FINISH'
-
