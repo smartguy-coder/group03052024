@@ -10,6 +10,7 @@
 - poetry add flake8 
 - poetry add black
 - poetry add isort
+- poetry add pytest
 
 
 ## other
