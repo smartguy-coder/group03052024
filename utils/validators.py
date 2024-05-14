@@ -6,3 +6,9 @@ def is_valid_email(email_candidate: str) -> bool:
     if len(email_parts) == 2:
         return True
     return False
+
+
+def is_string(anything) -> bool:
+    if isinstance(anything, str):
+        return True
+    return False
