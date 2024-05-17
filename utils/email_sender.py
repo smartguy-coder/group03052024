@@ -16,3 +16,17 @@ def send_email(
     USER = config.USER
     SMTP_SERVER = config.SMTP_SERVER
 
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = mail_subject
+    msg['From'] = f'{USER} sent this email'
+    msg['To'] = ', '.join(recipients)
+    msg['Reply-To'] = USER
+    msg['Return-Path'] = USER
+    msg['X-Mailer'] = 'decorator'
+
+    text_to_send = MIMEText(mail_body, 'plain')
+    msg.attach(text_to_send)
+
+
+
+
