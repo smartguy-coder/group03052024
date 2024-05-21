@@ -4,12 +4,14 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import jinja2
 
 import config
 
 
 def send_email(
     recipients: list[str],
+    *,
     mail_body: str,
     mail_subject: str,
     attachment: str = None,
@@ -30,6 +32,7 @@ def send_email(
         is_file_exists = os.path.exists(attachment)
         if not is_file_exists:
             print(f'file {attachment} does`n exist')
+            raise ValueError(f'file {attachment} does`n exist')
         else:
             basename = os.path.basename(attachment)
             filesize = os.path.getsize(attachment)
@@ -40,10 +43,19 @@ def send_email(
             encoders.encode_base64(file)
             msg.attach(file)
 
-    text_to_send = MIMEText(mail_body, "plain")
+    text_to_send = MIMEText(mail_body, "html")
     msg.attach(text_to_send)
 
     mail = smtplib.SMTP_SSL(SMTP_SERVER)
     mail.login(USER, TOKEN_API)
     mail.sendmail(USER, recipients, msg.as_string())
     mail.quit()
+
+
+def create_welcome_letter(params: dict) -> str:
+    template_loader = jinja2.FileSystemLoader(searchpath='./')
+    template_env = jinja2.Environment(loader=template_loader)
+    template_file = 'templates/welcome_letter.html'
+    template = template_env.get_template(template_file)
+    output = template.render(params)
+    return output

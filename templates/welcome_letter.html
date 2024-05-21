@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="background:green;">
+
+<h1>Dear {{ name }}</h1>
+<h2>welcome to the jungle</h2>
+
+ <ul>
+     {% for hobby in hobbies %}
+       <li>{{ hobby }}</li>
+     {% endfor %}
+</ul>
+
+     {% if has_car %}
+       <img src="https://media.architecturaldigest.com/photos/63079fc7b4858efb76814bd2/16:9/w_1920%2Cc_limit/9.%2520DeLorean-Alpha-5%2520%255BDeLorean%255D.jpg" alt="Italian Trulli">
+     {% endif %}
+
+
+</body>
+</html>
