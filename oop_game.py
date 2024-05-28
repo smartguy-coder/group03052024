@@ -16,6 +16,9 @@ class Character:
         self.stars = oop_game_constants.Stars.REGULAR_CITIZEN
         # self.log_my_actions(F'{self} was born')
 
+    def __add__(self, other):
+        return self.money + other.money
+
     def robbery_atm(self, atm: ATM, summa: int):
         self.money += summa
         atm.money -= summa
@@ -89,3 +92,6 @@ pedro.hit_someone(npc)
 pedro.hit_someone(npc)
 pedro.hit_someone(npc)
 print([pedro])
+
+
+print(pedro + npc)
