@@ -55,6 +55,7 @@ def log2(message: str) -> str:
     return result
 # print(log('ggggg'))
 
+
 def simple_decorator(func: Callable):
     def wrapper(arg):
         login = input('Enter login: ')
@@ -62,10 +63,7 @@ def simple_decorator(func: Callable):
         if login == db['login'] and password == db['password']:
             result = func(arg)
             return result
-
         return None
-
-
     return wrapper
 
 
