@@ -54,15 +54,20 @@ def log2(message: str) -> str:
     return result
 
 
-# print(log('ggggg'))
+def add_two_numbers(number_1: float | int, number_2: float | int) -> float | int:
+    result = number_1 + number_2
+    return result
 
 
 def simple_decorator(func: Callable):
-    def wrapper(arg):
+    def wrapper(*args, **kwargs):
+        # data1, data2, *other = args
+        # print(*args)
+        # print(kwargs)
         login = input("Enter login: ")
         password = input("Enter password: ")
         if login == db["login"] and password == db["password"]:
-            result = func(arg)
+            result = func(*args, **kwargs)
             return result
         return None
 
@@ -71,9 +76,12 @@ def simple_decorator(func: Callable):
 
 log = simple_decorator(func=log)
 log2 = simple_decorator(func=log2)
+add_two_numbers = simple_decorator(func=add_two_numbers)
 
-print(log("ggggg"))
-print(log2("ggggg"))
+
+# print(log("ggggg"))
+# print(log2("ggggg"))
+print(add_two_numbers(number_1=2, number_2=8))
 # print(log)
 
 # bad example
