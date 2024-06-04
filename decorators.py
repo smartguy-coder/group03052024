@@ -15,11 +15,7 @@
 import datetime
 from typing import Callable
 
-
-db = {
-    'login': 'admin',
-    'password': '123'
-}
+db = {"login": "admin", "password": "123"}
 # foo()
 # foo.new_value = 888
 # print(type(foo))
@@ -46,32 +42,38 @@ db = {
 # resut = wrapper(func=log, arg='5555')
 # print(resut)
 
+
 # #####################################################
 def log(message: str) -> str:
-    result = f'{datetime.datetime.utcnow()} == {message}'
+    result = f"{datetime.datetime.utcnow()} == {message}"
     return result
+
+
 def log2(message: str) -> str:
-    result = f'{datetime.datetime.utcnow()} >>>> {message}'
+    result = f"{datetime.datetime.utcnow()} >>>> {message}"
     return result
+
+
 # print(log('ggggg'))
 
 
 def simple_decorator(func: Callable):
     def wrapper(arg):
-        login = input('Enter login: ')
-        password = input('Enter password: ')
-        if login == db['login'] and password == db['password']:
+        login = input("Enter login: ")
+        password = input("Enter password: ")
+        if login == db["login"] and password == db["password"]:
             result = func(arg)
             return result
         return None
+
     return wrapper
 
 
 log = simple_decorator(func=log)
 log2 = simple_decorator(func=log2)
 
-print(log('ggggg'))
-print(log2('ggggg'))
+print(log("ggggg"))
+print(log2("ggggg"))
 # print(log)
 
 # bad example

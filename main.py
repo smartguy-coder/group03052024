@@ -3,11 +3,7 @@ from utils import email_sender
 
 def main():
     inner_html_body = email_sender.create_welcome_letter(
-        {
-            'name': 'Alex',
-            'hobbies': ['tennis', 'soccer'],
-            'has_car': True
-        }
+        {"name": "Alex", "hobbies": ["tennis", "soccer"], "has_car": True}
     )
     print(inner_html_body)
     email_sender.send_email(
