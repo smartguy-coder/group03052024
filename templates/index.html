@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+  {% block content %}
+  {% include 'some_common_data.html' %}
+
+
+{% for book in books %}
+
+  <div class="card" style="width: 18rem;">
+    <img src="https://m.media-amazon.com/images/I/81BP2Lw7jZL._SL1500_.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ book.title }}</h5>
+      <p class="card-text">Книга автора {{ book.author }}, жанр {{ book.genre }}, {{ book.year }}</p>
+      <a href="https://store.ababahalamaha.com.ua/uliubleni-virshi" class="btn btn-primary">Детальніше</a>
+    </div>
+  </div>
+
+{% endfor %}
+
+
+  {% endblock %}
