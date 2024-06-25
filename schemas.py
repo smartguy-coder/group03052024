@@ -10,7 +10,14 @@ class NewProduct(BaseModel):
     quantity: int = Field(default=11, gt=0, examples=[100])
 
 
-class CreatedProduct(NewProduct):
+class ProductId(BaseModel):
     id: int = Field(description='ID of created item')
+
+
+class CreatedProduct(NewProduct, ProductId):
     created_at: datetime
     updated_at: datetime
+
+
+class DeletedProduct(ProductId):
+    status: bool = True
