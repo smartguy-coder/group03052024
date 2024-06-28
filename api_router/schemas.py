@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, HttpUrl
 
 
 class NewProduct(BaseModel):
@@ -8,6 +8,7 @@ class NewProduct(BaseModel):
     description: str = Field(default='', examples=['Old phone'])
     price: float = Field(ge=0.01, examples=[100.78])
     quantity: int = Field(default=11, gt=0, examples=[100])
+    cover_url: HttpUrl
 
 
 class ProductId(BaseModel):

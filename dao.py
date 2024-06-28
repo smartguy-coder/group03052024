@@ -2,12 +2,13 @@ from database import Product, session
 from fastapi import HTTPException
 
 
-def create_product(name: str, description: str, price: float, quantity: int) -> Product:
+def create_product(name: str, description: str, price: float, quantity: int, cover_url) -> Product:
     product = Product(
         name=name,
         description=description,
         price=price,
         quantity=quantity,
+        cover_url=str(cover_url),
     )
     session.add(product)
     session.commit()

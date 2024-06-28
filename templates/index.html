@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 
 
-  {% block content %}
-  {% include 'some_common_data.html' %}
+{% block content %}
 
+<div class="row pt-2 pb-2 container">
 
-{% for book in books %}
+    {% for product in products %}
+        <div class="card" style="width: 18rem;">
+          <img src="{{ product.cover_url }}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description|truncate(80, False) }}</p>
+            <p class="card-text">{{ product.price }}</p>
+            <a href="#" class="btn btn-primary">Детальніше</a>
+          </div>
+        </div>
 
-  <div class="card" style="width: 18rem;">
-    <img src="https://m.media-amazon.com/images/I/81BP2Lw7jZL._SL1500_.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">{{ book.title }}</h5>
-      <p class="card-text">Книга автора {{ book.author }}, жанр {{ book.genre }}, {{ book.year }}</p>
-      <a href="https://store.ababahalamaha.com.ua/uliubleni-virshi" class="btn btn-primary">Детальніше</a>
-    </div>
-  </div>
+</div>
 
-{% endfor %}
+    {% endfor %}
 
-
-  {% endblock %}
+{% endblock %}
