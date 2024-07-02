@@ -15,7 +15,7 @@ def create_product(name: str, description: str, price: float, quantity: int, cov
     return product
 
 
-def get_all_products(limit: int, skip: int, name: str) -> list[Product]:
+def get_all_products(limit: int, skip: int, name: str | None) -> list[Product]:
     if name:
         products = session.query(Product).filter(Product.name.icontains(name)).limit(limit).offset(skip).all()
     else:
