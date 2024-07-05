@@ -1,5 +1,9 @@
-from database import Product, session
+import uuid
+
+from database import Product, session, User
 from fastapi import HTTPException
+
+from utils.utils_hashlib import get_password_hash
 
 
 def create_product(name: str, description: str, price: float, quantity: int, cover_url) -> Product:
@@ -38,3 +42,36 @@ def update_product(product_id: int, product_data: dict) -> Product:
 def delete_product(product_id) -> None:
     session.query(Product).filter(Product.id==product_id).delete()
     session.commit()
+
+
+def create_user(name: str, email: str, password: str) -> User:
+    user = User(
+        name=name,
+        email=email,
+        hashed_password=get_password_hash(password),
+    )
+    session.add(user)
+    session.commit()
+    return user
+
+
+def get_user_by_email(email: str) -> User | None:
+    user = session.query(User).filter(User.email == email).first()
+    return user
+
+
+def get_user_by_uuid(user_uuid: uuid.UUID) -> User | None:
+    user = session.query(User).filter(User.user_uuid == user_uuid).first()
+    return user
+
+
+def activate_user_account(user: User) -> User:
+    if user.is_verified:
+        # raise HTTPException(status_code=400, detail='Already was verified')
+        return user
+
+    user.is_verified = True
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user

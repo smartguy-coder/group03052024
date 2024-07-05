@@ -17,7 +17,7 @@ def send_email(
     attachment: str = None,
 ) -> None:
     TOKEN_API = config.TOKEN_API
-    USER = config.USER
+    USER = config.EMAIL_USER
     SMTP_SERVER = config.SMTP_SERVER
 
     msg = MIMEMultipart("alternative")
