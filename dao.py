@@ -45,14 +45,17 @@ def delete_product(product_id) -> None:
 
 
 def create_user(name: str, email: str, password: str) -> User:
-    user = User(
-        name=name,
-        email=email,
-        hashed_password=get_password_hash(password),
-    )
-    session.add(user)
-    session.commit()
-    return user
+    try:
+        user = User(
+            name=name,
+            email=email,
+            hashed_password=get_password_hash(password),
+        )
+        session.add(user)
+        session.commit()
+        return user
+    except Exception:
+        session.rollback()
 
 
 def get_user_by_email(email: str) -> User | None:
