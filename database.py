@@ -1,7 +1,7 @@
 from datetime import datetime
 import uuid
 
-from sqlalchemy import Column, Integer, Sequence, String, Text, Float, DateTime, create_engine, UUID, Boolean
+from sqlalchemy import Column, Integer, Sequence, String, Text, Float, DateTime, create_engine, UUID, Boolean, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 import config
@@ -42,6 +42,36 @@ class User(BaseInfoMixin, Base):
 
     def __str__(self):
         return f'<User: {self.id=}; {self.name=}>'
+
+    __repr__ = __str__
+
+
+class Order(BaseInfoMixin, Base):
+    __tablename__ = 'orders'
+
+    user_id = Column(ForeignKey('users.id'), nullable=False)
+    is_closed = Column(Boolean, default=False)
+
+    def __str__(self):
+        return f'<Order: {self.id=}; {self.user_id=}; {self.is_closed=}>'
+
+    __repr__ = __str__
+
+
+class OrderProduct(BaseInfoMixin, Base):
+    __tablename__ = 'order_products'
+
+    order_id = Column(ForeignKey('orders.id'), nullable=False)
+    product_id = Column(ForeignKey('products.id'), nullable=False)
+    price = Column(Float, nullable=False, default=10.0)
+    quantity = Column(Integer, nullable=False, default=0)
+
+    @property
+    def cost(self):
+        return self.quantity * self.price
+
+    def __str__(self):
+        return f'<OrderProduct: {self.id=}; {self.order_id=}; {self.quantity=}; {self.price=}, cost={self.cost}>'
 
     __repr__ = __str__
 

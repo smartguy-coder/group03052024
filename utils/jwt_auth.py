@@ -39,7 +39,7 @@ def set_cookies_web(user, response: RedirectResponse) -> RedirectResponse:
 
     payload = {
         'sub': user.email,
-        'exp': dt.datetime.utcnow() + dt.timedelta(seconds=30),
+        'exp': dt.datetime.utcnow() + dt.timedelta(seconds=3000),
         'iat': dt.datetime.utcnow(),
     }
     jwt_token = encode_jwt(payload)
