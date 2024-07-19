@@ -1,6 +1,9 @@
 import uuid
 
-from database import Product, session, User
+from sqlalchemy.orm import joinedload
+
+from database import Product, session, User, OrderProduct
+from sqlalchemy import select
 from fastapi import HTTPException
 
 from utils.utils_hashlib import get_password_hash
@@ -83,3 +86,22 @@ def activate_user_account(user: User) -> User:
     session.commit()
     session.refresh(user)
     return user
+
+
+def get_or_create(model, **kwargs):
+    query = select(model).filter_by(**kwargs)
+    instance = session.execute(query).scalar_one_or_none()
+    if instance:
+        return instance
+
+    instance = model(**kwargs)
+    session.add(instance)
+    session.commit()
+    return instance
+
+def fetch_order_products(order_id: int) -> list:
+    query = select(OrderProduct).filter(
+        OrderProduct.order_id == order_id
+    ).options(joinedload(OrderProduct.product))
+    result = session.execute(query).scalars().all()
+    return result

@@ -6,6 +6,7 @@ from fastapi.responses import RedirectResponse
 import dao
 from background_tasks.confirm_registration import confirm_registration
 from dao import get_all_products, get_product_by_id
+from database import Order, OrderProduct, session
 from utils.jwt_auth import set_cookies_web, get_user_web
 from utils.utils_hashlib import verify_password
 
@@ -30,6 +31,31 @@ def index(request: Request, user=Depends(get_user_web), query: str = Form(None))
     return response_with_cookies
 
 
+@web_router.get('/cart', include_in_schema=True)
+def cart(request: Request, user=Depends(get_user_web)):
+    if not user:
+        context = {
+            'request': request,
+            'products': get_all_products(50, 0, ''),
+            'title': 'Main page',
+        }
+        return templates.TemplateResponse('index.html', context=context)
+
+    order = dao.get_or_create(Order, user_id=user.id, is_closed=False)
+    cart = dao.fetch_order_products(order.id)
+    print(cart, 9999999)
+
+    context = {
+        'request': request,
+        'cart': cart,
+        'title': 'Кошик',
+        'user': user
+    }
+    response = templates.TemplateResponse('cart.html', context=context)
+    response_with_cookies = set_cookies_web(user, response)
+    return response_with_cookies
+
+
 @web_router.get('/product/{product_id}', include_in_schema=True)
 def get_product_by_id_web(request: Request, product_id: int, user=Depends(get_user_web)):
     product = get_product_by_id(product_id)
@@ -43,12 +69,6 @@ def get_product_by_id_web(request: Request, product_id: int, user=Depends(get_us
     response = templates.TemplateResponse('details.html', context=context)
     response_with_cookies = set_cookies_web(user, response)
     return response_with_cookies
-
-
-@web_router.post('/add-product-to-cart/')
-def add_product_to_cart(product_id: int):
-    print(9999999999, product_id)
-    pass
 
 
 @web_router.get('/register/', include_in_schema=True)
@@ -149,3 +169,27 @@ def web_logout(request: Request):
     response = templates.TemplateResponse('index.html', context=context)
     response.delete_cookie(key='token_user_hillel')
     return response
+
+
+@web_router.post('/add-product-to-cart/')
+def add_product_to_cart(request: Request, product_id: int = Form(), user=Depends(get_user_web)):
+    product = dao.get_product_by_id(product_id)
+    if not all([user, product]):
+        context = {
+            'request': request,
+            'products': get_all_products(50, 0, ''),
+            'title': 'Main page',
+        }
+        return templates.TemplateResponse('index.html', context=context)
+    order: Order = dao.get_or_create(Order, user_id=user.id, is_closed=False)
+    order_product: OrderProduct = dao.get_or_create(OrderProduct, order_id=order.id, product_id=product_id)
+    order_product.quantity += 1
+    order_product.price = product.price
+    session.add(order_product)
+    session.commit()
+    session.refresh(order_product)
+
+    redirect_url = request.url_for('index')
+    response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
+    response_with_cookies = set_cookies_web(user, response)
+    return response_with_cookies
