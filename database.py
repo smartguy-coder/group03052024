@@ -83,7 +83,6 @@ class Product(BaseInfoMixin, Base):
 
     __repr__ = __str__
 
-
 engine = create_engine(config.DB_PATH, echo=config.DEBUG)
 
 Session = sessionmaker(bind=engine)
