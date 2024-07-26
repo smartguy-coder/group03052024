@@ -12,11 +12,11 @@
           <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text">{{ product.description|truncate(80, False) }}</p>
-            <a href="{{ url_for('get_product_by_id_web', product_id=product.id) }}" class="btn btn-primary">Детальніше</a>
+            <a href="{{ url_for('get_product_by_id_web', product_id=product.id) }}" class="btn btn-primary">{{ details }}</a>
               {% if user %}
               <form method="post" action="{{ url_for('add_product_to_cart') }}">
               <input type="number" name="product_id" value="{{product.id}}" hidden="">
-              <button type="submit" class="btn btn-success">Купити</button>
+              <button type="submit" class="btn btn-success">{{ buy_product }}</button>
               </form>
               {% endif %}
 

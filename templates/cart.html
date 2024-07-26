@@ -21,14 +21,25 @@
     <tr>
       <td>{{ order_product.product.name }}</td>
       <td>{{ order_product.quantity }}</td>
-      <td>{{ order_product.cost }}</td>
+      <td>{{ order_product.cost|round(2) }}</td>
     </tr>
 
     {% endfor %}
 
+    <tr>
+      <td><b>Всього</b></td>
+      <td><b>-</b></td>
+      <td><b>{{ total }}</b></td>
+    </tr>
+
+
   </tbody>
 </table>
 
+
+       <form method="post" action="{{ url_for('payment') }}">
+        <button type="submit" class="btn btn-success">Оплатити замовлення</button>
+        </form>
 
     </div>
 </div>
