@@ -1,9 +1,9 @@
-from fastapi import Query, Path, HTTPException, APIRouter
+from fastapi import APIRouter, HTTPException, Path, Query
 from starlette import status
 
 import dao
-from api_router.schemas_products import NewProduct, CreatedProduct, DeletedProduct
-
+from api_router.schemas_products import (CreatedProduct, DeletedProduct,
+                                         NewProduct)
 
 api_router_products = APIRouter(
     prefix='/api/products',

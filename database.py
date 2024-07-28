@@ -1,8 +1,9 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 
-from sqlalchemy import Column, Integer, Sequence, String, Text, Float, DateTime, create_engine, UUID, Boolean, ForeignKey
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from sqlalchemy import (UUID, Boolean, Column, DateTime, Float, ForeignKey,
+                        Integer, Sequence, String, Text, create_engine)
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
 import config
 

@@ -1,10 +1,11 @@
 import uuid
 
-from fastapi import Query, Path, HTTPException, APIRouter, Request, BackgroundTasks
+from fastapi import (APIRouter, BackgroundTasks, HTTPException, Path, Query,
+                     Request)
 from starlette import status
 
 import dao
-from api_router.schemas_users import RegisterUserRequest, BaseUserInfo
+from api_router.schemas_users import BaseUserInfo, RegisterUserRequest
 from background_tasks.confirm_registration import confirm_registration
 from utils.email_sender import create_welcome_letter, send_email
 

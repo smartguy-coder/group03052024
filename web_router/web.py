@@ -1,18 +1,18 @@
 from uuid import UUID
 
-from fastapi.requests import Request
-from fastapi import Query, Path, HTTPException, APIRouter, Form, BackgroundTasks, status, Depends
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
-
 import stripe
+from fastapi import (APIRouter, BackgroundTasks, Depends, Form, HTTPException,
+                     Path, Query, status)
+from fastapi.requests import Request
+from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
 
 import dao
 from background_tasks.confirm_registration import confirm_registration
 from config import STRIPE_KEY
 from dao import get_all_products, get_product_by_id
 from database import Order, OrderProduct, session
-from utils.jwt_auth import set_cookies_web, get_user_web
+from utils.jwt_auth import get_user_web, set_cookies_web
 from utils.utils_hashlib import verify_password
 
 templates = Jinja2Templates(directory='templates')

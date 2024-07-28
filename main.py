@@ -1,8 +1,7 @@
 from gettext import translation
 
-from fastapi import FastAPI, Request
 import sentry_sdk
-
+from fastapi import FastAPI, Request
 
 import config
 from api_router.api_products import api_router_products

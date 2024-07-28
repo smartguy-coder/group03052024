@@ -1,9 +1,9 @@
-from starlette.responses import RedirectResponse
-from fastapi import Request
+import datetime as dt
 from time import sleep
 
 import jwt
-import datetime as dt
+from fastapi import Request
+from starlette.responses import RedirectResponse
 
 import dao
 from config import JWT_KEY
@@ -45,6 +45,8 @@ def set_cookies_web(user, response: RedirectResponse) -> RedirectResponse:
     jwt_token = encode_jwt(payload)
     response.set_cookie('token_user_hillel', jwt_token)
     return response
+
+
 
 
 def get_user_web(request: Request) -> User | None:

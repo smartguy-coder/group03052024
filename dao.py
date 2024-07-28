@@ -1,11 +1,10 @@
 import uuid
 
+from fastapi import HTTPException
+from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 
-from database import Product, session, User, OrderProduct
-from sqlalchemy import select
-from fastapi import HTTPException
-
+from database import OrderProduct, Product, User, session
 from utils.utils_hashlib import get_password_hash
 
 
