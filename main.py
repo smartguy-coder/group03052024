@@ -27,10 +27,10 @@ app = FastAPI(
 )
 
 
-@app.middleware('http')
+@app.middleware("http")
 async def set_language_middleware(request: Request, call_next):
-    lang = request.cookies.get('lang', 'uk')
-    translator = translation('this_project', localedir='locale', languages=[lang], fallback=True)
+    lang = request.cookies.get("lang", "uk")
+    translator = translation("this_project", localedir="locale", languages=[lang], fallback=True)
     _ = translator.gettext
     request.state.gettext = _
 
@@ -41,19 +41,3 @@ async def set_language_middleware(request: Request, call_next):
 app.include_router(api_router_products)
 app.include_router(api_router_users)
 app.include_router(web_router)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

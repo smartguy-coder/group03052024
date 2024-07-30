@@ -9,13 +9,8 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Головна</a>
         </li>
-      </ul>
-        {% if user %}
-  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ url_for('cart') }}">Кошик</a>
-        </li>
-        <li class="nav-item">
+
+                  <li class="nav-item">
           <a class="nav-link" href="{{ url_for('set_lang', lang='uk')}}">UK</a>
         </li>
               <li class="nav-item">
@@ -26,8 +21,27 @@
           <a class="nav-link" href="{{ url_for('set_lang', lang='en')}}">EN</a>
         </li>
 
+      </ul>
 
+        {% if user %}
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{ url_for('cart') }}">Кошик</a>
+        </li>
 
+        {% if user.is_admin %}
+<li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Меню адміна
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('product_create') }}">Створити товар</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        {% endif %}
       </ul>
         {% endif %}
 

@@ -23,14 +23,26 @@ def create_product(name: str, description: str, price: float, quantity: int, cov
 
 def get_all_products(limit: int, skip: int, name: str | None) -> list[Product]:
     if name:
-        products = session.query(Product).filter(
-            Product.name.icontains(name),
-            Product.quantity > 0,
-        ).limit(limit).offset(skip).all()
+        products = (
+            session.query(Product)
+            .filter(
+                Product.name.icontains(name),
+                Product.quantity > 0,
+            )
+            .limit(limit)
+            .offset(skip)
+            .all()
+        )
     else:
-        products = session.query(Product).filter(
-            Product.quantity > 0,
-        ).limit(limit).offset(skip).all()
+        products = (
+            session.query(Product)
+            .filter(
+                Product.quantity > 0,
+            )
+            .limit(limit)
+            .offset(skip)
+            .all()
+        )
     return products
 
 
@@ -40,14 +52,14 @@ def get_product_by_id(product_id) -> Product | None:
 
 
 def update_product(product_id: int, product_data: dict) -> Product:
-    session.query(Product).filter(Product.id==product_id).update(product_data)
+    session.query(Product).filter(Product.id == product_id).update(product_data)
     session.commit()
-    product = session.query(Product).filter(Product.id==product_id).first()
+    product = session.query(Product).filter(Product.id == product_id).first()
     return product
 
 
 def delete_product(product_id) -> None:
-    session.query(Product).filter(Product.id==product_id).delete()
+    session.query(Product).filter(Product.id == product_id).delete()
     session.commit()
 
 
@@ -98,9 +110,11 @@ def get_or_create(model, **kwargs):
     session.commit()
     return instance
 
+
 def fetch_order_products(order_id: int) -> list:
     query = select(OrderProduct).filter(
-        OrderProduct.order_id == order_id
+        OrderProduct.order_id == order_id,
+        OrderProduct.quantity > 0,
     ).options(joinedload(OrderProduct.product))
     result = session.execute(query).scalars().all()
     return result

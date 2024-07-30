@@ -11,11 +11,7 @@ from database import User
 
 
 def encode_jwt(payload_data: dict) -> str:
-    encode_jwt_ = jwt.encode(
-        payload=payload_data,
-        key=JWT_KEY,
-        algorithm='HS256'
-    )
+    encode_jwt_ = jwt.encode(payload=payload_data, key=JWT_KEY, algorithm="HS256")
     return encode_jwt_
 
 
@@ -24,7 +20,7 @@ def decode_jwt(encoded_jwt: str) -> dict:
         decoded_data = jwt.decode(
             jwt=encoded_jwt,
             key=JWT_KEY,
-            algorithms=['HS256'],
+            algorithms=["HS256"],
         )
         return decoded_data
     except jwt.exceptions.ExpiredSignatureError:
@@ -38,19 +34,17 @@ def set_cookies_web(user, response: RedirectResponse) -> RedirectResponse:
         return response
 
     payload = {
-        'sub': user.email,
-        'exp': dt.datetime.utcnow() + dt.timedelta(seconds=3000),
-        'iat': dt.datetime.utcnow(),
+        "sub": user.email,
+        "exp": dt.datetime.utcnow() + dt.timedelta(seconds=3000),
+        "iat": dt.datetime.utcnow(),
     }
     jwt_token = encode_jwt(payload)
-    response.set_cookie('token_user_hillel', jwt_token)
+    response.set_cookie("token_user_hillel", jwt_token)
     return response
 
 
-
-
 def get_user_web(request: Request) -> User | None:
-    token = request.cookies.get('token_user_hillel')
+    token = request.cookies.get("token_user_hillel")
 
     if not token:
         return
@@ -58,5 +52,5 @@ def get_user_web(request: Request) -> User | None:
     user_data = decode_jwt(token)
     if not user_data:
         return
-    user = dao.get_user_by_email(user_data['sub'])
+    user = dao.get_user_by_email(user_data["sub"])
     return user

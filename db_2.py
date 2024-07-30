@@ -1,7 +1,7 @@
 import sqlite3
 from pprint import pprint
 
-with sqlite3.connect('new_db2.sqlite3') as connection:
+with sqlite3.connect("new_db2.sqlite3") as connection:
     # cursor = connection.cursor()
 
     # another_table = """
@@ -23,7 +23,6 @@ with sqlite3.connect('new_db2.sqlite3') as connection:
     #     )
     # """
     # cursor.execute(query)
-
 
     # CREATE
     # insert_query = """
@@ -99,7 +98,7 @@ with sqlite3.connect('new_db2.sqlite3') as connection:
 
 
 # READ DUMP
-with sqlite3.connect('new_db3.sqlite3') as connection2:
+with sqlite3.connect("new_db3.sqlite3") as connection2:
     cursor2 = connection2.cursor()
     # with open('dump.sql', 'r') as dump:
     #     sql = dump.read()
@@ -135,44 +134,3 @@ with sqlite3.connect('new_db3.sqlite3') as connection2:
     """
     result = cursor2.execute(query).fetchall()
     pprint(result)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
