@@ -24,6 +24,7 @@ sentry_sdk.init(
 app = FastAPI(
     debug=config.DEBUG,
     lifespan=lifespan,
+    docs_url='/super-puper-docs'
 )
 
 

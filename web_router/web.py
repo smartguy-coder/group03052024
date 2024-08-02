@@ -362,11 +362,48 @@ def set_lang_ru(request: Request, user=Depends(get_user_web)):
 
 
 @web_router.get('/product/create')
-@web_router.post('/product/create')
 def product_create(request: Request, user=Depends(get_user_web)):
-    if request.method == "GET":
-        context = {"request": request, "title": "Add product", 'user': user}
-        return templates.TemplateResponse("create_product.html", context=context)
+    if not user or (user and not user.is_admin):
+        return
+    context = {"request": request, "title": "Add product", 'user': user}
+    return templates.TemplateResponse("create_product.html", context=context)
+
+
+@web_router.post('/product/create')
+def product_create(
+    request: Request,
+    user=Depends(get_user_web),
+    name: str = Form(None),
+    description: str = Form(None),
+    quantity: int = Form(None),
+    cover_url: str = Form(None),
+    price: float = Form(None),
+):
+    if not user or (user and not user.is_admin):
+        return
+
+    if not all([
+        name,
+        description,
+        quantity,
+        cover_url,
+        price
+    ]):
+        context = {"request": request, "title": "Register", 'user': user}
+        return templates.TemplateResponse("404.html", context=context)
+
+    created_product = dao.create_product(
+        name=name,
+        description=description,
+        quantity=quantity,
+        cover_url=cover_url,
+        price=price
+    )
+    redirect_url = request.url_for("get_product_by_id_web", product_id=created_product.id)
+    response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
+    response_with_cookies = set_cookies_web(user, response)
+    return response_with_cookies
+
 
 
 @web_router.get("/product/{product_id}", include_in_schema=True)

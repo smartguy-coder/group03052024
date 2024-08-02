@@ -4,22 +4,34 @@
 {% block content %}
 
 <form method="post">
-  <div class="mb-3">
-    <label for="exampleName" class="form-label">Name</label>
-    <input type="text" class="form-control" id="exampleName"  required minlength="2" name="name">
+
+   <div class="mb-3">
+    <label for="Name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="Name" required   minlength="2" maxlength="100" name="name">
   </div>
 
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name="email">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+<label for="floatingTextarea2">Description</label>
+<div class="form-floating">
+  <textarea class="form-control"  id="floatingTextarea2" required style="height: 150px" name="description"></textarea>
+</div>
+
+   <div class="mb-3">
+    <label for="cover_url" class="form-label">Cover URL</label>
+    <input type="url" class="form-control" id="cover_url"  required  name="cover_url">
   </div>
 
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" required minlength="8" name="password">
+   <div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+    <input type="number" step="0.01" class="form-control" id="price"  required  name="price" min="0.01">
   </div>
 
+   <div class="mb-3">
+    <label for="quantity" class="form-label">Quantity</label>
+    <input type="number" step="1" class="form-control" id="quantity"  required  name="quantity" min="1">
+  </div>
+
+
+  <br>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
