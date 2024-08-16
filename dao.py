@@ -1,6 +1,5 @@
 import uuid
 
-from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 
@@ -112,9 +111,13 @@ def get_or_create(model, **kwargs):
 
 
 def fetch_order_products(order_id: int) -> list:
-    query = select(OrderProduct).filter(
-        OrderProduct.order_id == order_id,
-        OrderProduct.quantity > 0,
-    ).options(joinedload(OrderProduct.product))
+    query = (
+        select(OrderProduct)
+        .filter(
+            OrderProduct.order_id == order_id,
+            OrderProduct.quantity > 0,
+        )
+        .options(joinedload(OrderProduct.product))
+    )
     result = session.execute(query).scalars().all()
     return result

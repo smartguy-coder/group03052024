@@ -1,15 +1,17 @@
-from fastapi import APIRouter, HTTPException, Path, Query
+from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from starlette import status
 
 import dao
 from api_router.schemas_products import (CreatedProduct, DeletedProduct,
                                          NewProduct)
+from utils.jwt_auth import get_user_api
 
 api_router_products = APIRouter(prefix="/api/products", tags=["API", "Products"])
 
 
 @api_router_products.post("/create/", status_code=status.HTTP_201_CREATED)
-def create_product(new_product: NewProduct) -> CreatedProduct:
+def create_product(new_product: NewProduct, user=Depends(get_user_api)) -> CreatedProduct:
+    print(user)
     created_product = dao.create_product(**new_product.dict())
     return created_product
 

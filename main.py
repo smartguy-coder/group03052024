@@ -2,6 +2,7 @@ from gettext import translation
 
 import sentry_sdk
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 
 import config
 from api_router.api_products import api_router_products
@@ -24,8 +25,9 @@ sentry_sdk.init(
 app = FastAPI(
     debug=config.DEBUG,
     lifespan=lifespan,
-    docs_url='/super-puper-docs'
 )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.middleware("http")

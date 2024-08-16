@@ -2,7 +2,7 @@ from uuid import UUID
 
 import stripe
 from fastapi import (APIRouter, BackgroundTasks, Depends, Form, HTTPException,
-                     Path, Query, status)
+                     status)
 from fastapi.requests import Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -28,12 +28,7 @@ web_router = APIRouter(
 def quantity_product_decrease(request: Request, product_id: int = Form(), user=Depends(get_user_web)):
     product = dao.get_product_by_id(product_id)
     if not all([user, product]):
-        context = {
-            "request": request,
-            "products": get_all_products(50, 0, ""),
-            "title": "Main page",
-            'user': user
-        }
+        context = {"request": request, "products": get_all_products(50, 0, ""), "title": "Main page", "user": user}
         return templates.TemplateResponse("index.html", context=context)
     order: Order = dao.get_or_create(Order, user_id=user.id, is_closed=False)
     order_product: OrderProduct = dao.get_or_create(OrderProduct, order_id=order.id, product_id=product_id)
@@ -51,12 +46,7 @@ def quantity_product_decrease(request: Request, product_id: int = Form(), user=D
 def quantity_product_increase(request: Request, product_id: int = Form(), user=Depends(get_user_web)):
     product = dao.get_product_by_id(product_id)
     if not all([user, product]):
-        context = {
-            "request": request,
-            "products": get_all_products(50, 0, ""),
-            "title": "Main page",
-            'user': user
-        }
+        context = {"request": request, "products": get_all_products(50, 0, ""), "title": "Main page", "user": user}
         return templates.TemplateResponse("index.html", context=context)
     order: Order = dao.get_or_create(Order, user_id=user.id, is_closed=False)
     order_product: OrderProduct = dao.get_or_create(OrderProduct, order_id=order.id, product_id=product_id)
@@ -73,12 +63,7 @@ def quantity_product_increase(request: Request, product_id: int = Form(), user=D
 def quantity_product_delete(request: Request, product_id: int = Form(), user=Depends(get_user_web)):
     product = dao.get_product_by_id(product_id)
     if not all([user, product]):
-        context = {
-            "request": request,
-            "products": get_all_products(50, 0, ""),
-            "title": "Main page",
-            'user': user
-        }
+        context = {"request": request, "products": get_all_products(50, 0, ""), "title": "Main page", "user": user}
         return templates.TemplateResponse("index.html", context=context)
     order: Order = dao.get_or_create(Order, user_id=user.id, is_closed=False)
     order_product: OrderProduct = dao.get_or_create(OrderProduct, order_id=order.id, product_id=product_id)
@@ -90,6 +75,7 @@ def quantity_product_delete(request: Request, product_id: int = Form(), user=Dep
     redirect_url = request.url_for("cart")
     response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
     return response
+
 
 @web_router.post("/payment")
 def payment(request: Request, user=Depends(get_user_web)):
@@ -149,7 +135,8 @@ def payment(request: Request, user=Depends(get_user_web)):
     #      "shipping_cost": null, "shipping_details": null, "shipping_options": [], "status": "open", "submit_type": null,
     #      "subscription": null, "success_url": "https://96ea-176-119-83-0.ngrok-free.app/success_payment",
     #      "total_details": {"amount_discount": 0, "amount_shipping": 0, "amount_tax": 0}, "ui_mode": "hosted",
-    #      "url": "https://checkout.stripe.com/c/pay/cs_test_a1ls58kJbCd9MRwTViv9qATiQy4MMVFXdLI7lY9Ey7Q1LZuYZ35PP7r2Op#fidkdWxOYHwnPyd1blpxYHZxWjA0VWBLbklXc09uRjBrXGxwaXFIYWFBQ3A2Ykh9NmtdVE9DdmhEdzJKbEpLTkh1PWhpNDQ2YUh9YWtiQTN3ZjFPZkFQSDYxZ2QxQm5DQEB9Vk5qcFVjUGJGNTVsfFFwQkgzSCcpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl"}
+    #      "url": "https://checkout.stripe.com/c/pay/cs_test_a1ls58kJbCd9MRwTViv9qATiQy4MMVFXdLI7lY9Ey7Q1LZuYZ35PP7r2Op
+    #      #fidkdWxOYHwnPyd1blpxYHZxWjA0VWBLbklXc09uRjBrXGxwaXFIYWFBQ3A2Ykh9NmtdVE9DdmhEdzJKbEpLTkh1PWhpNDQ2YUh9YWtiQTN3ZjFPZkFQSDYxZ2QxQm5DQEB9Vk5qcFVjUGJGNTVsfFFwQkgzSCcpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl"}
 
     return RedirectResponse(session_stripe["url"], status_code=status.HTTP_303_SEE_OTHER)
 
@@ -169,104 +156,104 @@ def cancel_payment():
 
 @web_router.post("/web_hook_payment")
 def web_hook_payment(data: dict):
-    n = {
-        "id": "evt_1PfmSbRvJkC5nYiuZcj7BJaL",
-        "object": "event",
-        "api_version": "2024-06-20",
-        "created": 1721755512,
-        "data": {
-            "object": {
-                "id": "cs_test_a1hEyG1x8EtCPlm5rVW3jrN8HLVqEIBPAzM6aENJIlC0ifMv1Dy2esougo",
-                "object": "checkout.session",
-                "after_expiration": None,
-                "allow_promotion_codes": None,
-                "amount_subtotal": 580800,
-                "amount_total": 580800,
-                "automatic_tax": {"enabled": False, "liability": None, "status": None},
-                "billing_address_collection": None,
-                "cancel_url": "https://96ea-176-119-83-0.ngrok-free.app/cancel_payment",
-                "client_reference_id": None,
-                "client_secret": None,
-                "consent": None,
-                "consent_collection": None,
-                "created": 1721755489,
-                "currency": "usd",
-                "currency_conversion": None,
-                "custom_fields": [],
-                "custom_text": {
-                    "after_submit": None,
-                    "shipping_address": None,
-                    "submit": None,
-                    "terms_of_service_acceptance": None,
-                },
-                "customer": None,
-                "customer_creation": "if_required",
-                "customer_details": {
-                    "address": {
-                        "city": None,
-                        "country": "UA",
-                        "line1": None,
-                        "line2": None,
-                        "postal_code": None,
-                        "state": None,
-                    },
-                    "email": "12345@ukr.net",
-                    "name": "kjfhjgfhj",
-                    "phone": None,
-                    "tax_exempt": "none",
-                    "tax_ids": [],
-                },
-                "customer_email": "12345@ukr.net",
-                "expires_at": 1721841889,
-                "invoice": None,
-                "invoice_creation": {
-                    "enabled": False,
-                    "invoice_data": {
-                        "account_tax_ids": None,
-                        "custom_fields": None,
-                        "description": None,
-                        "footer": None,
-                        "issuer": None,
-                        "metadata": {},
-                        "rendering_options": None,
-                    },
-                },
-                "livemode": False,
-                "locale": None,
-                "metadata": {"our_metadata": "78787877"},
-                "mode": "payment",
-                "payment_intent": "pi_3PfmSYRvJkC5nYiu1W4lMDqC",
-                "payment_link": None,
-                "payment_method_collection": "if_required",
-                "payment_method_configuration_details": None,
-                "payment_method_options": {"card": {"request_three_d_secure": "automatic"}},
-                "payment_method_types": ["card"],
-                "payment_status": "paid",
-                "phone_number_collection": {"enabled": False},
-                "recovered_from": None,
-                "saved_payment_method_options": None,
-                "setup_intent": None,
-                "shipping_address_collection": None,
-                "shipping_cost": None,
-                "shipping_details": None,
-                "shipping_options": [],
-                "status": "complete",
-                "submit_type": None,
-                "subscription": None,
-                "success_url": "https://96ea-176-119-83-0.ngrok-free.app/success_payment",
-                "total_details": {"amount_discount": 0, "amount_shipping": 0, "amount_tax": 0},
-                "ui_mode": "hosted",
-                "url": None,
-            }
-        },
-        "livemode": False,
-        "pending_webhooks": 3,
-        "request": {"id": None, "idempotency_key": None},
-        "type": "checkout.session.completed",
-    }
+    # n = {
+    #     "id": "evt_1PfmSbRvJkC5nYiuZcj7BJaL",
+    #     "object": "event",
+    #     "api_version": "2024-06-20",
+    #     "created": 1721755512,
+    #     "data": {
+    #         "object": {
+    #             "id": "cs_test_a1hEyG1x8EtCPlm5rVW3jrN8HLVqEIBPAzM6aENJIlC0ifMv1Dy2esougo",
+    #             "object": "checkout.session",
+    #             "after_expiration": None,
+    #             "allow_promotion_codes": None,
+    #             "amount_subtotal": 580800,
+    #             "amount_total": 580800,
+    #             "automatic_tax": {"enabled": False, "liability": None, "status": None},
+    #             "billing_address_collection": None,
+    #             "cancel_url": "https://96ea-176-119-83-0.ngrok-free.app/cancel_payment",
+    #             "client_reference_id": None,
+    #             "client_secret": None,
+    #             "consent": None,
+    #             "consent_collection": None,
+    #             "created": 1721755489,
+    #             "currency": "usd",
+    #             "currency_conversion": None,
+    #             "custom_fields": [],
+    #             "custom_text": {
+    #                 "after_submit": None,
+    #                 "shipping_address": None,
+    #                 "submit": None,
+    #                 "terms_of_service_acceptance": None,
+    #             },
+    #             "customer": None,
+    #             "customer_creation": "if_required",
+    #             "customer_details": {
+    #                 "address": {
+    #                     "city": None,
+    #                     "country": "UA",
+    #                     "line1": None,
+    #                     "line2": None,
+    #                     "postal_code": None,
+    #                     "state": None,
+    #                 },
+    #                 "email": "12345@ukr.net",
+    #                 "name": "kjfhjgfhj",
+    #                 "phone": None,
+    #                 "tax_exempt": "none",
+    #                 "tax_ids": [],
+    #             },
+    #             "customer_email": "12345@ukr.net",
+    #             "expires_at": 1721841889,
+    #             "invoice": None,
+    #             "invoice_creation": {
+    #                 "enabled": False,
+    #                 "invoice_data": {
+    #                     "account_tax_ids": None,
+    #                     "custom_fields": None,
+    #                     "description": None,
+    #                     "footer": None,
+    #                     "issuer": None,
+    #                     "metadata": {},
+    #                     "rendering_options": None,
+    #                 },
+    #             },
+    #             "livemode": False,
+    #             "locale": None,
+    #             "metadata": {"our_metadata": "78787877"},
+    #             "mode": "payment",
+    #             "payment_intent": "pi_3PfmSYRvJkC5nYiu1W4lMDqC",
+    #             "payment_link": None,
+    #             "payment_method_collection": "if_required",
+    #             "payment_method_configuration_details": None,
+    #             "payment_method_options": {"card": {"request_three_d_secure": "automatic"}},
+    #             "payment_method_types": ["card"],
+    #             "payment_status": "paid",
+    #             "phone_number_collection": {"enabled": False},
+    #             "recovered_from": None,
+    #             "saved_payment_method_options": None,
+    #             "setup_intent": None,
+    #             "shipping_address_collection": None,
+    #             "shipping_cost": None,
+    #             "shipping_details": None,
+    #             "shipping_options": [],
+    #             "status": "complete",
+    #             "submit_type": None,
+    #             "subscription": None,
+    #             "success_url": "https://96ea-176-119-83-0.ngrok-free.app/success_payment",
+    #             "total_details": {"amount_discount": 0, "amount_shipping": 0, "amount_tax": 0},
+    #             "ui_mode": "hosted",
+    #             "url": None,
+    #         }
+    #     },
+    #     "livemode": False,
+    #     "pending_webhooks": 3,
+    #     "request": {"id": None, "idempotency_key": None},
+    #     "type": "checkout.session.completed",
+    # }
     try:
         event = stripe.Event.construct_from(data, STRIPE_KEY)
-    except stripe.error.SignatureVerificationError as e:
+    except stripe.error.SignatureVerificationError:
         raise HTTPException(detail="NOT STRIPE DATA", status_code=status.HTTP_400_BAD_REQUEST)
     print(event)
     if event["type"] == "checkout.session.completed":
@@ -333,18 +320,18 @@ def cart(request: Request, user=Depends(get_user_web)):
     return response_with_cookies
 
 
-@web_router.get("/set-lang", include_in_schema=True)
-def set_lang(request: Request, user=Depends(get_user_web)):
-    context = {
-        "request": request,
-        "products": get_all_products(50, 0, ""),
-        "title": "Main page",
-        "user": user,
-    }
-    response = templates.TemplateResponse("index.html", context=context)
-    response_with_cookies = set_cookies_web(user, response)
-    response_with_cookies.set_cookie("language", "uk")
-    return response_with_cookies
+# @web_router.get("/set-lang", include_in_schema=True)
+# def set_lang(request: Request, user=Depends(get_user_web)):
+#     context = {
+#         "request": request,
+#         "products": get_all_products(50, 0, ""),
+#         "title": "Main page",
+#         "user": user,
+#     }
+#     response = templates.TemplateResponse("index.html", context=context)
+#     response_with_cookies = set_cookies_web(user, response)
+#     response_with_cookies.set_cookie("language", "uk")
+#     return response_with_cookies
 
 
 @web_router.get("/set-lang-ru", include_in_schema=True)
@@ -361,49 +348,38 @@ def set_lang_ru(request: Request, user=Depends(get_user_web)):
     return response_with_cookies
 
 
-@web_router.get('/product/create')
+@web_router.get("/product/create")
 def product_create(request: Request, user=Depends(get_user_web)):
     if not user or (user and not user.is_admin):
         return
-    context = {"request": request, "title": "Add product", 'user': user}
+    context = {"request": request, "title": "Add product", "user": user}
     return templates.TemplateResponse("create_product.html", context=context)
 
 
-@web_router.post('/product/create')
-def product_create(
-    request: Request,
-    user=Depends(get_user_web),
-    name: str = Form(None),
-    description: str = Form(None),
-    quantity: int = Form(None),
-    cover_url: str = Form(None),
-    price: float = Form(None),
-):
-    if not user or (user and not user.is_admin):
-        return
-
-    if not all([
-        name,
-        description,
-        quantity,
-        cover_url,
-        price
-    ]):
-        context = {"request": request, "title": "Register", 'user': user}
-        return templates.TemplateResponse("404.html", context=context)
-
-    created_product = dao.create_product(
-        name=name,
-        description=description,
-        quantity=quantity,
-        cover_url=cover_url,
-        price=price
-    )
-    redirect_url = request.url_for("get_product_by_id_web", product_id=created_product.id)
-    response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
-    response_with_cookies = set_cookies_web(user, response)
-    return response_with_cookies
-
+# @web_router.post("/product/create")
+# def product_create(
+#     request: Request,
+#     user=Depends(get_user_web),
+#     name: str = Form(None),
+#     description: str = Form(None),
+#     quantity: int = Form(None),
+#     cover_url: str = Form(None),
+#     price: float = Form(None),
+# ):
+#     if not user or (user and not user.is_admin):
+#         return
+#
+#     if not all([name, description, quantity, cover_url, price]):
+#         context = {"request": request, "title": "Register", "user": user}
+#         return templates.TemplateResponse("404.html", context=context)
+#
+#     created_product = dao.create_product(
+#         name=name, description=description, quantity=quantity, cover_url=cover_url, price=price
+#     )
+#     redirect_url = request.url_for("get_product_by_id_web", product_id=created_product.id)
+#     response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
+#     response_with_cookies = set_cookies_web(user, response)
+#     return response_with_cookies
 
 
 @web_router.get("/product/{product_id}", include_in_schema=True)
@@ -511,12 +487,7 @@ def web_logout(request: Request):
 def add_product_to_cart(request: Request, product_id: int = Form(), user=Depends(get_user_web)):
     product = dao.get_product_by_id(product_id)
     if not all([user, product]):
-        context = {
-            "request": request,
-            "products": get_all_products(50, 0, ""),
-            "title": "Main page",
-            'user': user
-        }
+        context = {"request": request, "products": get_all_products(50, 0, ""), "title": "Main page", "user": user}
         return templates.TemplateResponse("index.html", context=context)
     order: Order = dao.get_or_create(Order, user_id=user.id, is_closed=False)
     order_product: OrderProduct = dao.get_or_create(OrderProduct, order_id=order.id, product_id=product_id)
@@ -530,5 +501,3 @@ def add_product_to_cart(request: Request, product_id: int = Form(), user=Depends
     response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
     response_with_cookies = set_cookies_web(user, response)
     return response_with_cookies
-
-

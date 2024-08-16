@@ -61,7 +61,7 @@ with sqlite3.connect("new_db.sqlite3") as connection:
     query = """
         SELECT title, price
         FROM device
-        WHERE price > 5000 
+        WHERE price > 5000
         LIMIT 2
         OFFSET 1
     """
