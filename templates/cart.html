@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row pt-2 pb-2 container">
+
+
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Назва</th>
+      <th scope="col">Кількість</th>
+      <th scope="col">Загальна вартість позиції</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for order_product in cart %}
+    <tr>
+      <td>{{ order_product.product.name }}</td>
+      <td style="display: flex; align-items: center;">
+
+          <form method="post" action="{{ url_for('quantity_product_decrease') }}">
+          <input type="number" name="product_id" value="{{order_product.product.id}}" hidden="">
+          <button type="submit" class="btn btn-light">⬇</button>
+          </form>
+
+          {{ order_product.quantity }}
+
+          <form method="post" action="{{ url_for('quantity_product_increase') }}">
+          <input type="number" name="product_id" value="{{order_product.product.id}}" hidden="">
+          <button type="submit" class="btn btn-light">⬆</button>
+          </form>
+
+           <form method="post" action="{{ url_for('quantity_product_delete') }}">
+          <input type="number" name="product_id" value="{{order_product.product.id}}" hidden="">
+          <button type="submit" class="btn btn-light">&#x274C;</button>
+          </form>
+
+
+      </td>
+      <td>{{ order_product.cost|round(2) }}</td>
+    </tr>
+
+    {% endfor %}
+
+    <tr>
+      <td><b>Всього</b></td>
+      <td><b>-</b></td>
+      <td><b>{{ total }}</b></td>
+    </tr>
+
+
+  </tbody>
+</table>
+
+
+       <form method="post" action="{{ url_for('payment') }}">
+        <button type="submit" class="btn btn-success">Оплатити замовлення</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

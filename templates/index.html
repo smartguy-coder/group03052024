@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row pt-2 pb-2 container">
+
+    {% for product in products %}
+        <div class="card pb-2 pt-2 pl-2 pr-2" style="width: 18rem;">
+          <img src="{{ product.cover_url }}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description|truncate(80, False) }}</p>
+            <a href="{{ url_for('get_product_by_id_web', product_id=product.id) }}" class="btn btn-primary">{{ details }}</a>
+              {% if user %}
+              <form method="post" action="{{ url_for('add_product_to_cart') }}">
+              <input type="number" name="product_id" value="{{product.id}}" hidden="">
+              <button type="submit" class="btn btn-success">{{ buy_product }}</button>
+              </form>
+              {% endif %}
+
+          </div>
+        </div>
+
+    {% endfor %}
+
+    </div>
+</div>
+{% endblock %}
